@@ -498,7 +498,7 @@
   // ---- Booking form -> Zapier webhook ----
   // Replace this with your own "Catch Hook" webhook URL from Zapier
   // (Zapier: create a Zap, trigger = "Webhooks by Zapier" -> "Catch Hook", copy the URL here).
-  const ZAPIER_WEBHOOK_URL = "PASTE_YOUR_ZAPIER_WEBHOOK_URL_HERE";
+  const ZAPIER_WEBHOOK_URL = "https://hooks.zapier.com/hooks/catch/28546531/4t2j7qo/";
 
   const form = document.getElementById('bookingForm');
   const status = document.getElementById('formStatus');
@@ -516,27 +516,4 @@
 
     submitBtn.disabled = true;
     submitBtn.textContent = "Sending…";
-    status.textContent = "";
-
-    try {
-      await fetch(ZAPIER_WEBHOOK_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      });
-      status.textContent = "Request sent — check your email for confirmation.";
-      status.className = "form-status ok";
-      form.reset();
-    } catch (err) {
-      status.textContent = "Something went wrong. Please try again.";
-      status.className = "form-status err";
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = "Send lesson request";
-    }
-  });
-</script>
-
-</body>
-</html>
+    status.te
