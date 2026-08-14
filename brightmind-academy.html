@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BrightMind Academy — Online Tutoring</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#17263F;
+    --navy-soft:#233A5C;
+    --cream:#F7F2E7;
+    --cream-line:#E4DCC9;
+    --gold:#C89B3C;
+    --gold-deep:#A87D24;
+    --forest:#2F5D45;
+    --ink:#242320;
+    --paper-shadow: 0 1px 0 rgba(36,35,32,0.06);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces',serif;
+    font-weight:700;
+    letter-spacing:-0.01em;
+    margin:0;
+  }
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  a{color:inherit;}
+  ::selection{background:var(--gold); color:var(--navy);}
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+  }
+
+  /* ===== Binder tab nav ===== */
+  .tabbar{
+    display:flex;
+    gap:6px;
+    padding:18px 5vw 0;
+    background:var(--navy);
+    overflow-x:auto;
+  }
+  .tabbar-inner{display:flex; gap:6px; margin:0 auto; max-width:1100px; width:100%;}
+  .brand{
+    color:var(--cream);
+    font-family:'Fraunces',serif;
+    font-weight:700;
+    font-size:1.15rem;
+    padding:10px 18px 16px 0;
+    white-space:nowrap;
+    margin-right:auto;
+  }
+  .brand span{color:var(--gold);}
+  .tab{
+    position:relative;
+    padding:10px 18px 12px;
+    background:var(--cream);
+    color:var(--navy);
+    font-size:0.85rem;
+    font-weight:600;
+    text-decoration:none;
+    border-radius:10px 10px 0 0;
+    white-space:nowrap;
+    transform:translateY(4px);
+    transition:transform .18s ease, background .18s ease;
+  }
+  .tab:hover{transform:translateY(0); background:#fff;}
+  .tab:focus-visible{outline:3px solid var(--gold); outline-offset:2px;}
+  .tab.math{background:#EFE3C5;}
+  .tab.sci{background:#DCEAE0;}
+  .tab.eng{background:#F0DAD2;}
+  .tab.book{background:var(--gold); color:var(--navy);}
+
+  /* ===== Hero ===== */
+  .hero{
+    background:var(--navy);
+    color:var(--cream);
+    padding:64px 5vw 90px;
+    position:relative;
+  }
+  .hero-inner{max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1.1fr 0.9fr; gap:48px; align-items:center;}
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.78rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:14px;
+    display:block;
+  }
+  .hero h1{
+    font-size:clamp(2.2rem, 4.2vw, 3.4rem);
+    line-height:1.08;
+    color:#fff;
+  }
+  .hero h1 em{
+    font-style:normal;
+    color:var(--gold);
+    position:relative;
+  }
+  .underline-svg{display:block; margin-top:-6px; width:min(100%, 420px);}
+  .hero p.lede{
+    margin-top:20px;
+    font-size:1.08rem;
+    line-height:1.6;
+    color:#D9DFEA;
+    max-width:46ch;
+  }
+  .hero-ctas{display:flex; gap:14px; margin-top:32px; flex-wrap:wrap;}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:13px 24px;
+    border-radius:8px;
+    font-weight:600;
+    font-size:0.95rem;
+    text-decoration:none;
+    border:1.5px solid transparent;
+    cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:focus-visible{outline:3px solid var(--gold); outline-offset:2px;}
+  .btn-primary{background:var(--gold); color:var(--navy);}
+  .btn-primary:hover{transform:translateY(-2px); box-shadow:0 8px 20px rgba(200,155,60,0.35);}
+  .btn-ghost{border-color:rgba(247,242,231,0.4); color:var(--cream);}
+  .btn-ghost:hover{border-color:var(--cream); transform:translateY(-2px);}
+
+  /* notebook card in hero */
+  .notecard{
+    background:var(--cream);
+    color:var(--ink);
+    border-radius:6px;
+    padding:26px 26px 22px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.35);
+    transform:rotate(1.4deg);
+    position:relative;
+    background-image: repeating-linear-gradient(180deg, transparent, transparent 27px, var(--cream-line) 28px);
+  }
+  .notecard::before{
+    content:"";
+    position:absolute; left:34px; top:0; bottom:0; width:2px;
+    background:rgba(166,61,47,0.35);
+  }
+  .notecard h3{font-size:1rem; font-family:'IBM Plex Mono',monospace; font-weight:500; color:var(--forest); margin-bottom:10px; padding-left:22px;}
+  .notecard ul{margin:0; padding:0 0 0 22px; list-style:none;}
+  .notecard li{
+    font-size:0.92rem;
+    line-height:28px;
+    display:flex; gap:10px; align-items:baseline;
+  }
+  .check{color:var(--forest); font-weight:700;}
+
+  /* ===== Sections ===== */
+  section{padding:74px 5vw;}
+  .section-inner{max-width:1100px; margin:0 auto;}
+  .section-head{max-width:56ch; margin-bottom:44px;}
+  .section-head .eyebrow{color:var(--gold-deep);}
+  .section-head h2{font-size:clamp(1.6rem,2.6vw,2.2rem); color:var(--navy);}
+  .section-head p{margin-top:12px; color:#4A4740; line-height:1.6;}
+
+  .reveal{opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease;}
+  .reveal.in{opacity:1; transform:none;}
+
+  /* About */
+  .about{display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:start;}
+  .about p{line-height:1.75; color:#3C3A34; margin-bottom:16px;}
+  .about .signoff{
+    font-family:'Fraunces',serif; font-style:italic; font-size:1.1rem; color:var(--navy); margin-top:22px;
+  }
+  .stat-ledger{
+    border-top:1.5px solid var(--navy); padding-top:16px;
+  }
+  .stat-row{
+    display:flex; justify-content:space-between; padding:14px 0;
+    border-bottom:1px dashed var(--cream-line);
+    font-family:'IBM Plex Mono',monospace; font-size:0.88rem;
+  }
+  .stat-row span:first-child{color:#6B6759;}
+  .stat-row span:last-child{color:var(--navy); font-weight:600;}
+
+  /* Subjects as binder tabs / folders */
+  .subjects-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:20px;}
+  .folder{
+    background:#fff;
+    border-radius:4px 12px 12px 12px;
+    padding:26px 22px;
+    box-shadow:var(--paper-shadow), 0 6px 18px rgba(23,38,63,0.06);
+    position:relative;
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .folder:hover{transform:translateY(-4px); box-shadow:0 16px 30px rgba(23,38,63,0.12);}
+  .folder-tab{
+    position:absolute; top:-14px; left:22px;
+    padding:5px 14px;
+    border-radius:6px 6px 0 0;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.72rem;
+    font-weight:600;
+    letter-spacing:0.04em;
+  }
+  .folder.math .folder-tab{background:#EFE3C5; color:#7A5D14;}
+  .folder.sci .folder-tab{background:#DCEAE0; color:var(--forest);}
+  .folder.eng .folder-tab{background:#F0DAD2; color:#8A3F2E;}
+  .folder.gen .folder-tab{background:#DDE3EE; color:var(--navy);}
+  .folder h3{font-size:1.15rem; margin-top:10px; color:var(--navy);}
+  .folder p{color:#5C594F; font-size:0.92rem; line-height:1.55; margin-top:8px;}
+
+  /* How it works */
+  .steps{display:grid; grid-template-columns:repeat(3,1fr); gap:28px; counter-reset:step;}
+  .step{position:relative; padding-left:0;}
+  .step .num{
+    font-family:'Fraunces',serif; font-weight:900; font-size:2.4rem;
+    color:var(--gold); line-height:1; margin-bottom:10px; display:block;
+  }
+  .step h3{font-size:1.1rem; color:var(--navy); margin-bottom:8px;}
+  .step p{color:#4A4740; font-size:0.92rem; line-height:1.6;}
+
+  /* Booking - index card */
+  .book-wrap{
+    background:var(--navy);
+    border-radius:16px;
+    padding:52px 6vw;
+    display:grid;
+    grid-template-columns:0.9fr 1.1fr;
+    gap:48px;
+    align-items:start;
+  }
+  .book-copy .eyebrow{color:var(--gold);}
+  .book-copy h2{color:#fff; font-size:clamp(1.6rem,2.4vw,2.1rem);}
+  .book-copy p{color:#D9DFEA; line-height:1.65; margin-top:14px; max-width:40ch;}
+  .index-card{
+    background:var(--cream);
+    border-radius:8px;
+    padding:30px 28px;
+    box-shadow:0 25px 60px rgba(0,0,0,0.4);
+    border-top:6px solid var(--gold);
+  }
+  .card-line{
+    display:flex; align-items:center; gap:10px;
+    font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:#8A8676;
+    margin-bottom:18px; text-transform:uppercase; letter-spacing:0.08em;
+  }
+  .card-line .dot{width:6px; height:6px; border-radius:50%; background:var(--forest);}
+  .field-row{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px;}
+  .field{display:flex; flex-direction:column; gap:6px;}
+  .field.full{grid-column:1 / -1;}
+  label{font-size:0.78rem; font-weight:600; color:var(--navy);}
+  input, select, textarea{
+    font-family:'Inter',sans-serif;
+    font-size:0.92rem;
+    padding:11px 12px;
+    border-radius:6px;
+    border:1.5px solid var(--cream-line);
+    background:#fff;
+    color:var(--ink);
+  }
+  input:focus, select:focus, textarea:focus{
+    outline:none; border-color:var(--forest); box-shadow:0 0 0 3px rgba(47,93,69,0.15);
+  }
+  textarea{resize:vertical; min-height:80px;}
+  .submit-row{display:flex; align-items:center; gap:16px; margin-top:6px;}
+  .form-status{font-size:0.85rem; font-family:'IBM Plex Mono',monospace;}
+  .form-status.ok{color:var(--forest);}
+  .form-status.err{color:#A63D2F;}
+
+  /* Footer */
+  footer{
+    background:var(--ink);
+    color:#C9C5B8;
+    padding:44px 5vw 30px;
+    font-size:0.88rem;
+  }
+  .footer-inner{max-width:1100px; margin:0 auto; display:flex; justify-content:space-between; flex-wrap:wrap; gap:20px;}
+  footer a{text-decoration:none; color:#E9E5D6;}
+  .foot-brand{font-family:'Fraunces',serif; font-weight:700; color:#fff; font-size:1.05rem;}
+
+  @media (max-width: 860px){
+    .hero-inner, .about, .book-wrap{grid-template-columns:1fr;}
+    .steps{grid-template-columns:1fr;}
+    .field-row{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<nav class="tabbar">
+  <div class="tabbar-inner">
+    <div class="brand">Bright<span>Mind</span> Academy</div>
+    <a class="tab math" href="#subjects">Subjects</a>
+    <a class="tab sci" href="#how">How it works</a>
+    <a class="tab eng" href="#about">About</a>
+    <a class="tab book" href="#booking">Book a lesson</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div>
+      <span class="eyebrow">Online academic tutoring</span>
+      <h1>Turn confusion<br>into <em>confidence</em>.</h1>
+      <svg class="underline-svg" viewBox="0 0 420 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M2 10C90 2 210 2 300 8C340 10 380 6 418 4" stroke="#C89B3C" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+      <p class="lede">One-on-one online lessons for students who want a tutor that actually explains the "why," not just the answer. Pick a subject, book a time, meet on a call.</p>
+      <div class="hero-ctas">
+        <a href="#booking" class="btn btn-primary">Book a lesson →</a>
+        <a href="#subjects" class="btn btn-ghost">See subjects</a>
+      </div>
+    </div>
+    <div class="notecard reveal">
+      <h3>// today's lesson plan</h3>
+      <ul>
+        <li><span class="check">✓</span> 1:1 online sessions, any timezone</li>
+        <li><span class="check">✓</span> Book in under 2 minutes</li>
+        <li><span class="check">✓</span> Confirmation sent straight to your inbox</li>
+        <li><span class="check">✓</span> Reschedule anytime, no awkwardness</li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="section-inner about">
+    <div class="reveal">
+      <span class="eyebrow" style="color:var(--gold-deep); font-family:'IBM Plex Mono',monospace; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.1em;">About BrightMind</span>
+      <h2 style="margin-top:12px; color:var(--navy); font-size:clamp(1.5rem,2.4vw,2rem);">Lessons built around how you actually learn.</h2>
+      <p style="margin-top:18px;">BrightMind Academy runs focused, one-on-one online lessons instead of crowded classrooms. Every session starts with the same question: where exactly did understanding break down, and what's the shortest path back to solid ground?</p>
+      <p>No filler, no generic worksheets — each lesson is planned around the actual gap a student is stuck on, then followed up with a short recap so the next session picks up exactly where the last one left off.</p>
+      <p class="signoff">"Good tutoring isn't about having the answer. It's about making the next answer obvious."</p>
+    </div>
+    <div class="reveal">
+      <div class="stat-ledger">
+        <div class="stat-row"><span>Format</span><span>1:1, live online</span></div>
+        <div class="stat-row"><span>Lesson length</span><span>45–60 min</span></div>
+        <div class="stat-row"><span>Booking time</span><span>&lt; 2 minutes</span></div>
+        <div class="stat-row"><span>Reply time</span><span>Same day</span></div>
+        <div class="stat-row"><span>Scheduling</span><span>Automated confirmation</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="subjects" style="background:#fff;">
+  <div class="section-inner">
+    <div class="section-head reveal">
+      <span class="eyebrow">What's on the shelf</span>
+      <h2>Subjects</h2>
+      <p>A focused set of subjects taught properly, rather than a long list taught thinly.</p>
+    </div>
+    <div class="subjects-grid">
+      <div class="folder math reveal">
+        <span class="folder-tab">MATH</span>
+        <h3>Mathematics</h3>
+        <p>From algebra foundations to calculus — built step by step, with the reasoning shown, not just the shortcut.</p>
+      </div>
+      <div class="folder sci reveal">
+        <span class="folder-tab">SCI</span>
+        <h3>Sciences</h3>
+        <p>Biology, chemistry and physics, explained through the everyday logic behind the formulas.</p>
+      </div>
+      <div class="folder eng reveal">
+        <span class="folder-tab">ENG</span>
+        <h3>English &amp; Writing</h3>
+        <p>Essay structure, comprehension and exam technique, with feedback that's specific, not generic.</p>
+      </div>
+      <div class="folder gen reveal">
+        <span class="folder-tab">GEO</span>
+        <h3>Geography &amp; Environmental Science</h3>
+        <p>Physical and human geography, mapwork and environmental systems, taught with real-world examples.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="section-inner">
+    <div class="section-head reveal">
+      <span class="eyebrow">The process</span>
+      <h2>How a lesson comes together</h2>
+      <p>Three steps, start to finish — no back-and-forth emails required.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <span class="num">01</span>
+        <h3>Request a lesson</h3>
+        <p>Fill in the booking card below with your subject, preferred time and what you're stuck on.</p>
+      </div>
+      <div class="step reveal">
+        <span class="num">02</span>
+        <h3>Get confirmed</h3>
+        <p>You'll get a confirmation with the lesson time and a link to join, sent straight to your inbox.</p>
+      </div>
+      <div class="step reveal">
+        <span class="num">03</span>
+        <h3>Learn, live</h3>
+        <p>Join the call at the scheduled time for a focused, one-on-one session on exactly what you need.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="booking" style="background:#fff;">
+  <div class="section-inner">
+    <div class="book-wrap">
+      <div class="book-copy reveal">
+        <span class="eyebrow">Book a lesson</span>
+        <h2>Fill in the card. We'll take it from there.</h2>
+        <p>Submit your details and preferred time — you'll get a confirmation shortly. Every request goes straight into our scheduling system, so nothing falls through the cracks.</p>
+      </div>
+      <form class="index-card reveal" id="bookingForm">
+        <div class="card-line"><span class="dot"></span> Lesson request card</div>
+        <div class="field-row">
+          <div class="field">
+            <label for="name">Full name</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="phone">Phone (optional)</label>
+            <input type="tel" id="phone" name="phone">
+          </div>
+          <div class="field">
+            <label for="subject">Subject</label>
+            <select id="subject" name="subject" required>
+              <option value="">Select…</option>
+              <option>Mathematics</option>
+              <option>Sciences</option>
+              <option>English & Writing</option>
+              <option>Geography & Environmental Science</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="date">Preferred date</label>
+            <input type="date" id="date" name="date" required>
+          </div>
+          <div class="field">
+            <label for="time">Preferred time</label>
+            <input type="time" id="time" name="time" required>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field full">
+            <label for="message">What do you need help with?</label>
+            <textarea id="message" name="message" placeholder="e.g. Struggling with quadratic equations before my mock exam"></textarea>
+          </div>
+        </div>
+        <div class="submit-row">
+          <button type="submit" class="btn btn-primary" id="submitBtn">Send lesson request</button>
+          <span class="form-status" id="formStatus"></span>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="foot-brand">BrightMind Academy</div>
+      <p style="margin-top:6px; max-width:32ch;">Online lessons, one student at a time.</p>
+    </div>
+    <div>
+      <div style="color:#fff; font-weight:600; margin-bottom:8px;">Contact</div>
+      <p><a href="mailto:mandiditavonga24@gmail.com">mandiditavonga24@gmail.com</a></p>
+      <p style="margin-top:6px;"><a href="https://wa.me/263788705709" target="_blank" rel="noopener">WhatsApp: 0788 705 709</a></p>
+      <p style="margin-top:6px;"><a href="https://wa.me/263716340088" target="_blank" rel="noopener">WhatsApp: 0716 340 088</a></p>
+    </div>
+    <div>
+      <div style="color:#fff; font-weight:600; margin-bottom:8px;">Hours</div>
+      <p>Mon–Sat, 9am–7pm</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ---- Reveal on scroll ----
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // ---- Booking form -> Zapier webhook ----
+  // Replace this with your own "Catch Hook" webhook URL from Zapier
+  // (Zapier: create a Zap, trigger = "Webhooks by Zapier" -> "Catch Hook", copy the URL here).
+  const ZAPIER_WEBHOOK_URL = "PASTE_YOUR_ZAPIER_WEBHOOK_URL_HERE";
+
+  const form = document.getElementById('bookingForm');
+  const status = document.getElementById('formStatus');
+  const submitBtn = document.getElementById('submitBtn');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(form).entries());
+
+    if (ZAPIER_WEBHOOK_URL.includes("PASTE_YOUR")) {
+      status.textContent = "Connect your Zapier webhook URL in the code to go live.";
+      status.className = "form-status err";
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Sending…";
+    status.textContent = "";
+
+    try {
+      await fetch(ZAPIER_WEBHOOK_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+      status.textContent = "Request sent — check your email for confirmation.";
+      status.className = "form-status ok";
+      form.reset();
+    } catch (err) {
+      status.textContent = "Something went wrong. Please try again.";
+      status.className = "form-status err";
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Send lesson request";
+    }
+  });
+</script>
+
+</body>
+</html>
