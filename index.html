@@ -165,8 +165,7 @@
   .section-head h2{font-size:clamp(1.6rem,2.6vw,2.2rem); color:var(--navy);}
   .section-head p{margin-top:12px; color:#4A4740; line-height:1.6;}
 
-  .reveal{opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease;}
-  .reveal.in{opacity:1; transform:none;}
+  .reveal{opacity:1;}
 
   /* About */
   .about{display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:start;}
@@ -488,13 +487,6 @@
 </footer>
 
 <script>
-  // ---- Reveal on scroll ----
-  const revealEls = document.querySelectorAll('.reveal');
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-  }, { threshold: 0.15 });
-  revealEls.forEach(el => io.observe(el));
-
   // ---- Booking form -> Zapier webhook ----
   // Replace this with your own "Catch Hook" webhook URL from Zapier
   // (Zapier: create a Zap, trigger = "Webhooks by Zapier" -> "Catch Hook", copy the URL here).
@@ -516,4 +508,27 @@
 
     submitBtn.disabled = true;
     submitBtn.textContent = "Sending…";
-    status.te
+    status.textContent = "";
+
+    try {
+      await fetch(ZAPIER_WEBHOOK_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+      status.textContent = "Request sent — check your email for confirmation.";
+      status.className = "form-status ok";
+      form.reset();
+    } catch (err) {
+      status.textContent = "Something went wrong. Please try again.";
+      status.className = "form-status err";
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Send lesson request";
+    }
+  });
+</script>
+
+</body>
+</html>
